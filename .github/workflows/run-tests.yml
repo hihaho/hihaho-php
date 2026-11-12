@@ -1,0 +1,93 @@
+name: run-tests
+
+permissions:
+  contents: read
+
+on:
+  push:
+    paths:
+      - '**.php'
+      - '.github/workflows/run-tests.yml'
+      - 'phpunit.xml'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'testbench.yaml'
+      - 'workbench/**'
+  pull_request:
+    paths:
+      - '**.php'
+      - '.github/workflows/run-tests.yml'
+      - 'phpunit.xml'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'testbench.yaml'
+      - 'workbench/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Floor — lowest supported combo (prefer-lowest)
+          - { php: '8.4', laravel: '12.*', testbench: '10.*', stability: prefer-lowest }
+          # Ceiling — highest supported combo
+          - { php: '8.4', laravel: '13.*', testbench: '11.*', stability: prefer-stable }
+          # Mid Laravel on the PHP floor
+          - { php: '8.4', laravel: '12.*', testbench: '10.*', stability: prefer-stable }
+          # Stability-axis sanity: prefer-lowest at the ceiling
+          - { php: '8.4', laravel: '13.*', testbench: '11.*', stability: prefer-lowest }
+          # Newest PHP on the newest Laravel
+          - { php: '8.5', laravel: '13.*', testbench: '11.*', stability: prefer-stable }
+
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+
+      - name: Execute tests
+        run: vendor/bin/phpunit
+
+  composer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    name: composer validate and audit
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction --no-dev --no-scripts
+
+      - name: Audit dependencies
+        run: composer audit --no-dev

@@ -1,0 +1,77 @@
+[
+    {
+        "type": "text",
+        "start_time": 0,
+        "end_time": 10,
+        "title": "Text",
+        "text": "Your text here",
+        "action": {
+            "type": "jump",
+            "time": 25.2,
+            "link": null
+        },
+        "should_fade_in": false,
+        "should_fade_out": false,
+        "style": {
+            "top": "70.04%",
+            "left": "25%",
+            "height": "20.17%",
+            "width": "50%",
+            "background_color": "rgba(255, 255, 255, 0.9)",
+            "border_radius": 15,
+            "padding_top": "40",
+            "border": {
+                "border_width": 2,
+                "border_style": "dashed",
+                "border_color": "#fff"
+            }
+        }
+    },
+    {
+        "type": "link",
+        "start_time": 0,
+        "end_time": 10,
+        "title": "link interaction",
+        "action": {
+            "type": "link",
+            "time": 0,
+            "link": "https://example.com"
+        },
+        "style": {
+            "top": "30%",
+            "left": "25%",
+            "height": "15%",
+            "width": "50%",
+            "border_radius": 15
+        }
+    },
+    {
+        "type": "chapter",
+        "title": "Table of contents",
+        "start_time": 5.0,
+        "end_time": 60.0,
+        "position": "right",
+        "should_collapse_after_menu_item_click": true,
+        "should_pause_when_shown": true,
+        "should_start_collapsed": true,
+        "should_use_menu_layout": true,
+        "chapters": [
+            {
+                "title": "Chapter one",
+                "title_short": "One",
+                "start_time": 5.0,
+                "end_time": 15.0,
+                "is_disabled": false,
+                "sort_order": 1
+            },
+            {
+                "title": "Chapter two",
+                "title_short": "Two",
+                "start_time": 15.0,
+                "end_time": 30.0,
+                "is_disabled": true,
+                "sort_order": 2
+            }
+        ]
+    }
+]

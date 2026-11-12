@@ -1,0 +1,222 @@
+[
+    {
+        "name": "api.v2.upload-video.finished",
+        "method": "POST",
+        "uri": "v2/upload-video/{upload_video}/finished"
+    },
+    {
+        "name": "api.v2.upload-video.video.show",
+        "method": "GET",
+        "uri": "v2/upload-video/{upload_video}"
+    },
+    {
+        "name": "api.v2.upload-video.video.store",
+        "method": "POST",
+        "uri": "v2/upload-video/{upload_video}/video"
+    },
+    {
+        "name": "api.v2.video-container.create-child",
+        "method": "POST",
+        "uri": "v2/video-container/{container}/create"
+    },
+    {
+        "name": "api.v2.video-container.index",
+        "method": "GET",
+        "uri": "v2/video-container"
+    },
+    {
+        "name": "api.v2.video-container.upload-video.destroy.failed",
+        "method": "DELETE",
+        "uri": "v2/video-container/{container}/upload-video/failed"
+    },
+    {
+        "name": "api.v2.video-container.upload-video.index",
+        "method": "GET",
+        "uri": "v2/video-container/{container}/upload-video"
+    },
+    {
+        "name": "api.v2.video-container.upload-video.store",
+        "method": "POST",
+        "uri": "v2/video-container/{container}/upload-video"
+    },
+    {
+        "name": "api.v2.video-container.video-from-platform",
+        "method": "POST",
+        "uri": "v2/video-container/{container}/video-from-platform"
+    },
+    {
+        "name": "api.v2.video.ai-task.create",
+        "method": "POST",
+        "uri": "v2/video/{video_id}/ai-task"
+    },
+    {
+        "name": "api.v2.video.ai-task.index",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/ai-task"
+    },
+    {
+        "name": "api.v2.video.allowed-viewer-token.store",
+        "method": "POST",
+        "uri": "v2/video/{video_id}/allowed_viewer_token"
+    },
+    {
+        "name": "api.v2.video.destroy.batch",
+        "method": "DELETE",
+        "uri": "v2/video/batch"
+    },
+    {
+        "name": "api.v2.video.export",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/export"
+    },
+    {
+        "name": "api.v2.video.index",
+        "method": "GET",
+        "uri": "v2/video"
+    },
+    {
+        "name": "api.v2.video.interaction.destroy",
+        "method": "DELETE",
+        "uri": "v2/video/{video_id}/interaction/{interaction_id}"
+    },
+    {
+        "name": "api.v2.video.interaction.destroy.batch",
+        "method": "DELETE",
+        "uri": "v2/video/{video_id}/interaction/batch"
+    },
+    {
+        "name": "api.v2.video.interaction.index",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/interaction"
+    },
+    {
+        "name": "api.v2.video.interaction.show",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/interaction/{interaction_id}"
+    },
+    {
+        "name": "api.v2.video.interaction.store.batch",
+        "method": "POST",
+        "uri": "v2/video/{video_id}/interaction/batch"
+    },
+    {
+        "name": "api.v2.video.move.batch",
+        "method": "PUT",
+        "uri": "v2/video/batch/move/{container}"
+    },
+    {
+        "name": "api.v2.video.question.destroy",
+        "method": "DELETE",
+        "uri": "v2/video/{video_id}/question/{question_id}"
+    },
+    {
+        "name": "api.v2.video.question.destroy.batch",
+        "method": "DELETE",
+        "uri": "v2/video/{video_id}/question/batch"
+    },
+    {
+        "name": "api.v2.video.question.index",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/question"
+    },
+    {
+        "name": "api.v2.video.question.show",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/question/{question_id}"
+    },
+    {
+        "name": "api.v2.video.question.store.batch",
+        "method": "POST",
+        "uri": "v2/video/{video_id}/question/batch"
+    },
+    {
+        "name": "api.v2.video.session.index",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/session"
+    },
+    {
+        "name": "api.v2.video.session.show",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/session/{video_session}"
+    },
+    {
+        "name": "api.v2.video.show",
+        "method": "GET",
+        "uri": "v2/video/{video_id}"
+    },
+    {
+        "name": "api.v2.video.statistics.aggregated",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/aggregated-statistics"
+    },
+    {
+        "name": "api.v2.video.stats.interactions",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/stats/interactions"
+    },
+    {
+        "name": "api.v2.video.stats.metadata.list",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/stats/metadata"
+    },
+    {
+        "name": "api.v2.video.stats.metadata.show",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/stats/metadata/{video_session}"
+    },
+    {
+        "name": "api.v2.video.stats.questions",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/stats/questions"
+    },
+    {
+        "name": "api.v2.video.stats.views",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/stats/views"
+    },
+    {
+        "name": "api.v2.video.stats.views-by-user-agent",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/stats/views-by-user-agent"
+    },
+    {
+        "name": "api.v2.video.subtitle.store.batch",
+        "method": "POST",
+        "uri": "v2/video/{video_id}/subtitle/batch"
+    },
+    {
+        "name": "api.v2.video.subtitles",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/subtitles"
+    },
+    {
+        "name": "api.v2.video.swap-uuid",
+        "method": "POST",
+        "uri": "v2/video/swap/from/{videoFrom}/to/{videoTo}"
+    },
+    {
+        "name": "api.v2.video.thumbnail.activate",
+        "method": "PUT",
+        "uri": "v2/video/{video_id}/thumbnail/{thumbnail_id}/activate"
+    },
+    {
+        "name": "api.v2.video.thumbnail.destroy",
+        "method": "DELETE",
+        "uri": "v2/video/{video_id}/thumbnail/{thumbnail_id}"
+    },
+    {
+        "name": "api.v2.video.thumbnail.index",
+        "method": "GET",
+        "uri": "v2/video/{video_id}/thumbnail"
+    },
+    {
+        "name": "api.v2.video.thumbnail.update",
+        "method": "POST",
+        "uri": "v2/video/{video_id}/thumbnail"
+    },
+    {
+        "name": "api.v2.video.update",
+        "method": "PUT",
+        "uri": "v2/video/{video_id}"
+    }
+]
