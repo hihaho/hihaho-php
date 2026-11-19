@@ -237,11 +237,21 @@ final class WriteEndpointsTest extends ResourceTestCase
     {
         $this->respond(['token' => 'tok', 'expires_at' => null, 'player_url' => 'https://p', 'embed_url' => 'https://e']);
 
-        $token = $this->hihaho->video(12)->createViewerToken('viewer-1', ['team-a'], 3600);
+        $token = $this->hihaho->video(12)->createViewerToken('viewer-1', ['team' => 'a'], 3600);
 
         $this->assertSame('tok', $token->token);
         $this->assertNull($token->expiresAt);
-        $this->assertSentJson('POST', 'v2/video/12/allowed_viewer_token', ['viewer_uid' => 'viewer-1', 'variables' => ['team-a'], 'lifetime' => 3600]);
+        $this->assertSentJson('POST', 'v2/video/12/allowed_viewer_token', ['viewer_uid' => 'viewer-1', 'variables' => ['team' => 'a'], 'lifetime' => 3600]);
+    }
+
+    #[Test]
+    public function a_viewer_token_without_variables_leaves_them_out(): void
+    {
+        $this->respond(['token' => 'tok', 'expires_at' => null, 'player_url' => 'https://p', 'embed_url' => 'https://e']);
+
+        $this->hihaho->video(12)->createViewerToken('viewer-1');
+
+        $this->assertSentJson('POST', 'v2/video/12/allowed_viewer_token', ['viewer_uid' => 'viewer-1']);
     }
 
     #[Test]
@@ -264,11 +274,22 @@ final class WriteEndpointsTest extends ResourceTestCase
     }
 
     #[Test]
-    public function a_task_type_the_api_cannot_start_is_refused(): void
+    #[DataProvider('unstartableTaskTypeProvider')]
+    public function a_task_type_the_api_cannot_start_is_refused(AiTaskType $type): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->hihaho->video(12)->aiTasks()->start(AiTaskType::DubAudio);
+        $this->hihaho->video(12)->aiTasks()->start($type);
+    }
+
+    /**
+     * @return iterable<string, array{AiTaskType}>
+     */
+    public static function unstartableTaskTypeProvider(): iterable
+    {
+        yield 'dub audio' => [AiTaskType::DubAudio];
+        yield 'evaluation rubrics' => [AiTaskType::GenerateEvaluationRubrics];
+        yield 'question performance' => [AiTaskType::AnalyzeQuestionPerformance];
     }
 
     #[Test]

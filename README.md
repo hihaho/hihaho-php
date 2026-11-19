@@ -254,7 +254,7 @@ $interactionIds = $hihaho->video(123)->interactions()->createMany([
 ]);
 
 $questionIds = $hihaho->video(123)->questions()->createMany([
-    new MultipleChoiceQuestion(activeAt: 30, text: 'Which one?', answers: [Answer::correct('A'), Answer::wrong('B')]),
+    new MultipleChoiceQuestion(activeAt: 30, answers: [Answer::correct('A'), Answer::wrong('B')], text: 'Which one?'),
 ]);
 ```
 

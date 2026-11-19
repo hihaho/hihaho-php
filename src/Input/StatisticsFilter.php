@@ -13,7 +13,10 @@ use InvalidArgumentException;
 final readonly class StatisticsFilter
 {
     /**
-     * @param  list<string>  $variables  URL variables a session must have, at most 20 (25 for the session list)
+     * @param  array<string, string|null>  $variables  URL variables a session must have, as name => value. At most 20
+     *                                               (25 for the session list); each value at most 255 characters.
+     *                                               The API ignores an empty value. Only the views, the metadata
+     *                                               list and the session list filter on variables.
      */
     public function __construct(
         public ?DateTimeInterface $from = null,

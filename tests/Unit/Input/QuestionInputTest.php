@@ -29,7 +29,9 @@ use Hihaho\Sdk\Input\Questions\VacancyQuestion;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * The allowed keys are the keys the API's question import accepts, copied by hand, not from
@@ -104,9 +106,9 @@ final class QuestionInputTest extends TestCase
 
         yield 'essay' => [new EssayQuestion(10, 'Why?', $settings), 'essay', [], []];
         yield 'rating' => [new RatingQuestion(10, 'Rate it', $settings), 'rating', [], []];
-        yield 'multiple choice' => [new MultipleChoiceQuestion(10, 'Pick', $answers, $settings), 'mc', ['answers'], ['answers']];
-        yield 'multiple response' => [new MultipleResponseQuestion(10, 'Pick', $answers, $settings), 'mr', ['answers'], ['answers']];
-        yield 'image' => [new ImageQuestion(10, 'Pick', $answers, true, $settings, true), 'image', ['answers', 'enable_answer_image_zoom'], ['answers', 'can_select_multiple_answers', 'enable_answer_image_zoom']];
+        yield 'multiple choice' => [new MultipleChoiceQuestion(10, $answers, 'Pick', $settings), 'mc', ['answers'], ['answers']];
+        yield 'multiple response' => [new MultipleResponseQuestion(10, $answers, 'Pick', $settings), 'mr', ['answers'], ['answers']];
+        yield 'image' => [new ImageQuestion(10, $answers, 'Pick', true, $settings, true), 'image', ['answers', 'enable_answer_image_zoom'], ['answers', 'can_select_multiple_answers', 'enable_answer_image_zoom']];
         yield 'open' => [new OpenQuestion(10, 'Explain', $answers, true, true, AiPartialScoringStrategy::Average, true, false, [['id' => 1, 'folderId' => 7]], $settings, AiReviewStrictness::Strict), 'open',
             ['answers', ...self::OPEN], ['answers', ...self::OPEN, 'ai_context_documents']];
         yield 'vacancy' => [new VacancyQuestion(10, 'jobs@hihaho.com', 'Apply', 'Company', 'First', 'Last', 'Upload your CV', true, $settings), 'vacancy', self::VACANCY, self::VACANCY];
@@ -117,8 +119,8 @@ final class QuestionInputTest extends TestCase
     {
         $question = new MultipleChoiceQuestion(
             activeAt: 12.5,
-            text: 'Which one?',
             answers: [new Answer('A', true, AnswerAction::jump(20)), new Answer('B', false)],
+            text: 'Which one?',
             settings: new QuestionSettings(points: 2, feedbackType: FeedbackType::Screen, actions: new QuestionActions(incorrect: AnswerAction::jumpToInteraction(5))),
         );
 
@@ -140,7 +142,7 @@ final class QuestionInputTest extends TestCase
     public function difficulty_strictness_and_zoom_are_sent_as_the_api_values(): void
     {
         $open = new OpenQuestion(1, settings: new QuestionSettings(difficulty: QuestionDifficulty::Medium), reviewStrictness: AiReviewStrictness::VeryLenient)->toArray();
-        $image = new ImageQuestion(1, enableAnswerImageZoom: false)->toArray();
+        $image = new ImageQuestion(1, answers: [Answer::correct('A')], enableAnswerImageZoom: false)->toArray();
 
         $this->assertSame('medium', $open['difficulty']);
         $this->assertSame(1, $open['review_strictness']);
@@ -183,9 +185,9 @@ final class QuestionInputTest extends TestCase
     {
         yield 'essay' => [fn (string $ref): QuestionInput => new EssayQuestion(1, ref: $ref)];
         yield 'rating' => [fn (string $ref): QuestionInput => new RatingQuestion(1, ref: $ref)];
-        yield 'multiple choice' => [fn (string $ref): QuestionInput => new MultipleChoiceQuestion(1, ref: $ref)];
-        yield 'multiple response' => [fn (string $ref): QuestionInput => new MultipleResponseQuestion(1, ref: $ref)];
-        yield 'image' => [fn (string $ref): QuestionInput => new ImageQuestion(1, ref: $ref)];
+        yield 'multiple choice' => [fn (string $ref): QuestionInput => new MultipleChoiceQuestion(1, answers: [Answer::correct('A')], ref: $ref)];
+        yield 'multiple response' => [fn (string $ref): QuestionInput => new MultipleResponseQuestion(1, answers: [Answer::correct('A')], ref: $ref)];
+        yield 'image' => [fn (string $ref): QuestionInput => new ImageQuestion(1, answers: [Answer::correct('A')], ref: $ref)];
         yield 'open' => [fn (string $ref): QuestionInput => new OpenQuestion(1, ref: $ref)];
         yield 'vacancy' => [fn (string $ref): QuestionInput => new VacancyQuestion(1, 'jobs@hihaho.com', ref: $ref)];
     }
@@ -236,7 +238,7 @@ final class QuestionInputTest extends TestCase
     }
 
     /**
-     * @param  Closure(list<Answer>): QuestionInput  $make
+     * @param  Closure(non-empty-list<Answer>): QuestionInput  $make
      */
     #[Test]
     #[DataProvider('answerCapProvider')]
@@ -254,7 +256,22 @@ final class QuestionInputTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{Closure(list<Answer>): QuestionInput}>
+     * @param  class-string<QuestionInput>  $class
+     */
+    #[Test]
+    #[TestWith([MultipleChoiceQuestion::class])]
+    #[TestWith([MultipleResponseQuestion::class])]
+    #[TestWith([ImageQuestion::class])]
+    public function a_choice_question_without_answers_is_refused(string $class): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        // Callers without static analysis can still pass an empty list.
+        new ReflectionClass($class)->newInstanceArgs(['activeAt' => 1, 'answers' => []]);
+    }
+
+    /**
+     * @return iterable<string, array{Closure(non-empty-list<Answer>): QuestionInput}>
      */
     public static function answerCapProvider(): iterable
     {
