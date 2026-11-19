@@ -29,9 +29,11 @@ parameters:
         complexity: false
         configurable: false
         static: false
+        modern: false
         symfony: false
         symfonyConfig: false
         doctrine: false
+        collections: false
         phpunit: false
 
     paths:

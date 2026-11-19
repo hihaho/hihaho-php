@@ -28,7 +28,7 @@
         "guzzlehttp/psr7": "^2.7||^3.0"
     },
     "require-dev": {
-        "driftingly/rector-laravel": "^2.5",
+        "driftingly/rector-laravel": "^2.7.3",
         "larastan/larastan": "^3.10",
         "laravel/boost": "^2.0||^3.0",
         "laravel/pao": "^1.0",
@@ -43,8 +43,9 @@
         "rector/rector": "^2.5",
         "sandermuller/boost-skills": "^2.27.0",
         "sandermuller/package-boost-laravel": "^1.0",
+        "sandermuller/rector-preset": "~2.8.0",
         "spaze/phpstan-disallowed-calls": "^4.13",
-        "symplify/phpstan-rules": "^14.17",
+        "symplify/phpstan-rules": "^14.19",
         "tomasvotruba/cognitive-complexity": "^1.2",
         "tomasvotruba/type-coverage": "^2.3"
     },
