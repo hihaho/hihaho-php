@@ -11,17 +11,21 @@ use InvalidArgumentException;
 final readonly class ImageQuestion extends QuestionInput
 {
     /**
-     * @param  list<Answer>  $answers  at most 20
+     * @param  non-empty-list<Answer>  $answers  at most 20
      */
     public function __construct(
         float $activeAt,
+        public array $answers,
         ?string $text = null,
-        public array $answers = [],
         public ?bool $canSelectMultipleAnswers = null,
         QuestionSettings $settings = new QuestionSettings(),
         public ?bool $enableAnswerImageZoom = null,
         ?string $ref = null,
     ) {
+        if ($answers === []) {
+            throw new InvalidArgumentException('This question type needs at least one answer.');
+        }
+
         if (count($answers) > 20) {
             throw new InvalidArgumentException('A question can have at most 20 answers.');
         }

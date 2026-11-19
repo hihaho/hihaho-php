@@ -21,6 +21,7 @@ use Hihaho\Sdk\Exceptions\InvalidResponseException;
 use Hihaho\Sdk\Exceptions\PreconditionFailedException;
 use Hihaho\Sdk\Hihaho;
 use Hihaho\Sdk\Input\StatisticsFilter;
+use Hihaho\Sdk\Resources\Statistics;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -222,10 +223,10 @@ final class ReadEndpointsTest extends ResourceTestCase
             'scaled_result' => 100, 'percentage_to_succeed' => null, 'passed' => true, 'session_started_at' => null, 'video_closed_at' => null,
             'has_started' => false, 'has_finished' => false, 'variables' => []]]));
 
-        $filter = new StatisticsFilter(from: CarbonImmutable::parse('2026-10-01'), until: CarbonImmutable::parse('2026-10-31'), variables: ['team-a']);
+        $filter = new StatisticsFilter(from: CarbonImmutable::parse('2026-10-01'), until: CarbonImmutable::parse('2026-10-31'), variables: ['team' => 'a', 'region' => null]);
         $session = $this->hihaho->video(12)->sessions()->list($filter, PerPage::Ten)->page()->items[0];
 
-        $this->assertRequested('GET', 'v2/video/12/session?start_date=2026-10-01%2000%3A00%3A00&end_date=2026-10-31%2000%3A00%3A00&variables%5B0%5D=team-a&per_page=10&page=1');
+        $this->assertRequested('GET', 'v2/video/12/session?start_date=2026-10-01%2000%3A00%3A00&end_date=2026-10-31%2000%3A00%3A00&variables%5Bteam%5D=a&per_page=10&page=1');
         $this->assertEqualsWithDelta(100.0, $session->scaledResult, PHP_FLOAT_EPSILON);
     }
 
@@ -276,6 +277,29 @@ final class ReadEndpointsTest extends ResourceTestCase
         $this->assertCount(1, $views);
         $this->assertSame(10, $views[0]->total);
         $this->assertNull($views[0]->period);
+    }
+
+    /**
+     * @param  Closure(Statistics, StatisticsFilter): mixed  $call
+     */
+    #[Test]
+    #[DataProvider('statisticsFilterProvider')]
+    public function statistics_send_the_variables_by_name(string $path, Closure $call, string $extraQuery): void
+    {
+        $this->respond($extraQuery === '' ? ['data' => []] : self::paginated([]));
+
+        $call($this->hihaho->video(12)->statistics(), new StatisticsFilter(variables: ['team' => 'a']));
+
+        $this->assertRequested('GET', "v2/video/12/stats/{$path}?variables%5Bteam%5D=a{$extraQuery}");
+    }
+
+    /**
+     * @return iterable<string, array{string, Closure(Statistics, StatisticsFilter): mixed, string}>
+     */
+    public static function statisticsFilterProvider(): iterable
+    {
+        yield 'views' => ['views', fn (Statistics $s, StatisticsFilter $f): array => $s->views($f), ''];
+        yield 'metadata' => ['metadata', fn (Statistics $s, StatisticsFilter $f): mixed => $s->metadata($f)->page(), '&per_page=100&page=1'];
     }
 
     #[Test]

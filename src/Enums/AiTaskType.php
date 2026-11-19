@@ -35,8 +35,6 @@ enum AiTaskType: string
             self::TranslateSubtitles,
             self::GenerateOpenQuestions,
             self::GenerateChapters,
-            self::GenerateEvaluationRubrics,
-            self::AnalyzeQuestionPerformance,
         ];
     }
 

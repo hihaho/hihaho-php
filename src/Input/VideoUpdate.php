@@ -21,6 +21,10 @@ final class VideoUpdate
         return new self();
     }
 
+    /**
+     * 3 to 100 characters. The API first removes emoji and other unsafe characters, then checks
+     * the length, and stores the result.
+     */
     public function displayName(?string $displayName): self
     {
         return $this->with('display_name', $displayName);

@@ -43,7 +43,7 @@
         "api.v2.video.interaction.destroy": "$hihaho->video(123)->interactions()->delete(456);",
         "api.v2.video.question.index": "foreach ($hihaho->video(123)->questions()->list() as $question) {\n    echo $question->id;\n}",
         "api.v2.video.question.show": "$question = $hihaho->video(123)->questions()->get(789);",
-        "api.v2.video.question.store.batch": "use Hihaho\\Sdk\\Input\\Questions\\Answer;\nuse Hihaho\\Sdk\\Input\\Questions\\MultipleChoiceQuestion;\n\n$ids = $hihaho->video(123)->questions()->createMany([\n    new MultipleChoiceQuestion(activeAt: 30, text: 'Which one?', answers: [Answer::correct('A'), Answer::wrong('B')]),\n]);",
+        "api.v2.video.question.store.batch": "use Hihaho\\Sdk\\Input\\Questions\\Answer;\nuse Hihaho\\Sdk\\Input\\Questions\\MultipleChoiceQuestion;\n\n$ids = $hihaho->video(123)->questions()->createMany([\n    new MultipleChoiceQuestion(activeAt: 30, answers: [Answer::correct('A'), Answer::wrong('B')], text: 'Which one?'),\n]);",
         "api.v2.video.question.destroy.batch": "$hihaho->video(123)->questions()->deleteMany([789, 790]);",
         "api.v2.video.question.destroy": "$hihaho->video(123)->questions()->delete(789);"
     }

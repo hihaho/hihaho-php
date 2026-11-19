@@ -38,14 +38,15 @@ final readonly class VideoScope extends Resource
     }
 
     /**
-     * @param  list<string>  $variables  URL variables for the viewer's sessions, at most 20
+     * @param  array<string, string>  $variables  URL variables for the viewer's sessions, as name => value. At most 20;
+     *                                          each value at most 255 characters.
      * @param  int|null  $lifetimeSeconds  null for a token that never expires
      */
     public function createViewerToken(string $viewerUid, array $variables = [], ?int $lifetimeSeconds = null): ViewerToken
     {
         $body = array_filter([
             'viewer_uid' => $viewerUid,
-            'variables' => $variables === [] ? null : array_values($variables),
+            'variables' => $variables === [] ? null : $variables,
             'lifetime' => $lifetimeSeconds,
         ], fn (mixed $value): bool => $value !== null);
 
