@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -52,7 +52,7 @@ jobs:
       # the whole environment, and GITHUB_RUN_ID changes every run.
       - name: Restore PHPStan cache
         id: phpstan_cache
-        uses: actions/cache/restore@v6
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             .cache/phpstan/resultCache.php
@@ -67,7 +67,7 @@ jobs:
 
       - name: Save PHPStan cache
         if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.phpstan_cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v6
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             .cache/phpstan/resultCache.php
