@@ -12,6 +12,9 @@ use Hihaho\Sdk\Input\Fields;
  */
 final readonly class LinkVideoInteraction extends InteractionInput
 {
+    /**
+     * @param  string|null  $previousVideoButtonText  at most 30 characters
+     */
     public function __construct(
         public float $startTime,
         public float $endTime,

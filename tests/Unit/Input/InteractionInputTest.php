@@ -14,6 +14,7 @@ use Hihaho\Sdk\Enums\HotspotBlinkingSpeed;
 use Hihaho\Sdk\Enums\Locale;
 use Hihaho\Sdk\Enums\MenuButtonPosition;
 use Hihaho\Sdk\Enums\MenuPosition;
+use Hihaho\Sdk\Enums\ObjectFit;
 use Hihaho\Sdk\Enums\PauseContent;
 use Hihaho\Sdk\Enums\PopupButtonLabel;
 use Hihaho\Sdk\Enums\PreviousVideoButtonMode;
@@ -127,7 +128,7 @@ final class InteractionInputTest extends TestCase
         yield 'menu' => [new MenuInteraction(...$common, position: MenuPosition::Center, pauseWhenShown: true, notTimeBound: true, menuOptions: $options, showChapterNumbers: true),
             ['position', 'should_pause_when_shown', 'should_not_use_time', 'should_show_chapter_numbers', ...self::OPTIONS],
             [...self::OPTIONS, 'position', 'should_pause_when_shown', 'should_not_use_time', 'should_show_chapter_numbers']];
-        yield 'frame' => [new FrameInteraction(...$common, box: $box, backgroundColor: '#000', fadeIn: true, fadeOut: true, popup: $popup, action: Action::link('https://example.com', true), pauseVideo: true, continuePlaying: FrameContinuePlaying::ClickOutsideFrameElement, buttonPosition: MenuButtonPosition::TopRight, resumeVideoWithEvent: true, blockPlayback: true, objectFit: 'cover', stayAliveAfterHiding: true),
+        yield 'frame' => [new FrameInteraction(...$common, box: $box, backgroundColor: '#000', fadeIn: true, fadeOut: true, popup: $popup, action: Action::link('https://example.com', true), pauseVideo: true, continuePlaying: FrameContinuePlaying::ClickOutsideFrameElement, buttonPosition: MenuButtonPosition::TopRight, resumeVideoWithEvent: true, blockPlayback: true, objectFit: ObjectFit::Cover, stayAliveAfterHiding: true),
             [...self::BOX, 'style.background_color', ...self::FADE, ...self::POPUP, ...self::ACTION, ...self::LINK, 'action.should_pause_video', 'action.frame_continue_playing_option', 'action.frame_button_position', 'action.should_resume_video_with_event', 'action.should_block_playback', 'style.object_fit', 'attributes.should_stay_alive_after_hiding'],
             [...self::BOX, ...self::FADE, ...self::POPUP, ...self::LINK, 'style.background_color', 'style.object_fit', 'attributes.should_stay_alive_after_hiding', 'action.type', 'action.should_pause_video', 'action.frame_continue_playing_option', 'action.frame_button_position', 'action.should_resume_video_with_event', 'action.should_block_playback']];
         yield 'highlight' => [new HighlightInteraction(...$common, endTime: 3, box: $box, backgroundColor: '#000', fadeIn: true, fadeOut: true, tooltip: $tooltip, action: Action::jump(2)),
@@ -136,7 +137,7 @@ final class InteractionInputTest extends TestCase
         yield 'hotspot' => [new HotspotInteraction(...$common, endTime: 3, showIndicator: true, box: $box, backgroundColor: '#000', text: 'Hi', verticalText: true, action: Action::showScoreScreen(), indicatorColor: '#f00', textLabelColor: '#0f0', blinkingSpeed: HotspotBlinkingSpeed::VerySlow, textRenderScale: 2, tooltipPlacement: TooltipPlacement::Auto),
             [...self::BOX, 'style.background_color', ...self::TEXT, ...self::ACTION, ...self::LINK, 'attributes.should_show_indicator', 'attributes.indicator_color', 'attributes.text_label_color', 'attributes.blinking_speed', 'attributes.text_render_scale', 'attributes.tooltip_placement'],
             [...self::BOX, ...self::TEXT, 'attributes.should_show_indicator', 'attributes.indicator_color', 'attributes.text_label_color', 'attributes.blinking_speed', 'attributes.text_render_scale', 'attributes.tooltip_placement', 'style.background_color', 'action.type']];
-        yield 'image' => [new ImageInteraction(...$common, endTime: 3, imageUrl: '/img/default_image_interaction.png', box: $box, backgroundColor: '#000', fadeIn: true, fadeOut: true, popup: $popup, tooltip: $tooltip, action: Action::jumpToInteraction(4), objectFit: 'cover', opacity: 0.5, clickThrough: true, playGifOnMouseover: true),
+        yield 'image' => [new ImageInteraction(...$common, endTime: 3, imageUrl: '/img/default_image_interaction.png', box: $box, backgroundColor: '#000', fadeIn: true, fadeOut: true, popup: $popup, tooltip: $tooltip, action: Action::jumpToInteraction(4), objectFit: ObjectFit::Cover, opacity: 0.5, clickThrough: true, playGifOnMouseover: true),
             ['image_url', ...self::BOX, 'style.background_color', ...self::FADE, ...self::POPUP, ...self::TOOLTIP, ...self::ACTION, ...self::LINK, 'style.object_fit', 'style.opacity', 'attributes.should_click_through', 'should_play_gif_on_mouseover'],
             [...self::BOX, ...self::FADE, ...self::TOOLTIP, ...self::POPUP, 'image_url', 'style.background_color', 'style.object_fit', 'style.opacity', 'attributes.should_click_through', 'should_play_gif_on_mouseover', 'action.type', 'action.interaction_id']];
         yield 'jump to' => [new JumpToInteraction(...$common, action: Action::jump(30)), self::ACTION,
@@ -146,7 +147,7 @@ final class InteractionInputTest extends TestCase
         yield 'link video' => [new LinkVideoInteraction(...$common, endTime: 3, box: $box, backgroundColor: '#000', text: 'Go', verticalText: false, textStroke: TextStroke::Black, padding: $padding, fadeIn: true, fadeOut: true, tooltip: $tooltip, action: Action::linkVideo('uuid'), targetStartTime: 4, previousVideoButton: PreviousVideoButtonMode::Everywhere, previousVideoButtonText: 'Back'),
             [...self::BOX, 'style.background_color', ...self::TEXT, ...self::PAD, ...self::FADE, ...self::TOOLTIP, ...self::ACTION, ...self::LINK, 'action.link_video_target_custom_start_time', 'action.previous_video_button_mode', 'action.previous_video_button_text'],
             [...self::BOX, ...self::PAD, ...self::TEXT, ...self::FADE, ...self::TOOLTIP, 'style.background_color', 'action.type', 'action.link', 'action.link_video_target_custom_start_time', 'action.previous_video_button_mode', 'action.previous_video_button_text']];
-        yield 'pause' => [new PauseInteraction(...$common, box: $box, backgroundColor: '#000', text: 'Wait', verticalText: true, textStroke: TextStroke::White, padding: $padding, fadeIn: true, fadeOut: true, action: Action::jumpToEnd(), content: PauseContent::Image, imageUrl: '/img/default_image_interaction.png', soundUrl: '/sound/no_audio_sound.mp3', enableSound: true, continueButton: ContinueButtonDisplayMode::TextOnly, continueButtonLeft: '1%', continueButtonTop: '2%', objectFit: 'cover', opacity: 1, clickThrough: true, blockPlayback: true, playGifOnMouseover: true),
+        yield 'pause' => [new PauseInteraction(...$common, box: $box, backgroundColor: '#000', text: 'Wait', verticalText: true, textStroke: TextStroke::White, padding: $padding, fadeIn: true, fadeOut: true, action: Action::jumpToEnd(), content: PauseContent::Image, imageUrl: '/img/default_image_interaction.png', soundUrl: '/sound/no_audio_sound.mp3', enableSound: true, continueButton: ContinueButtonDisplayMode::TextOnly, continueButtonLeft: '1%', continueButtonTop: '2%', objectFit: ObjectFit::Cover, opacity: 1, clickThrough: true, blockPlayback: true, playGifOnMouseover: true),
             [...self::BOX, 'style.background_color', ...self::TEXT, ...self::PAD, ...self::FADE, ...self::ACTION, 'content_mode', 'image_url', 'sound_url', 'should_enable_sound', 'continue_button_display_mode', 'style.continue_button_left', 'style.continue_button_top', 'style.object_fit', 'style.opacity', 'attributes.should_click_through', 'should_play_gif_on_mouseover', 'action.should_block_playback'],
             [...self::BOX, ...self::PAD, ...self::TEXT, ...self::FADE, 'style.background_color', 'style.continue_button_left', 'style.continue_button_top', 'style.object_fit', 'style.opacity', 'attributes.should_click_through', 'should_play_gif_on_mouseover', 'content_mode', 'image_url', 'sound_url', 'should_enable_sound', 'continue_button_display_mode', 'action.type', 'action.should_block_playback']];
         yield 'scroll' => [new ScrollInteraction(...$common, endTime: 3, box: $box, backgroundColor: '#000', text: 'News', verticalText: false, textStroke: TextStroke::None, padding: $padding, fadeIn: true, fadeOut: true, tooltip: $tooltip, action: Action::none(), flyIn: true, scrollDuration: 10, scrollDirection: ScrollDirection::Rtl),
@@ -327,6 +328,14 @@ final class InteractionInputTest extends TestCase
         $frame = new FrameInteraction(startTime: 0, pauseVideo: true, continuePlaying: FrameContinuePlaying::ClickOutsideFrameElementOrFrameButton);
 
         $this->assertSame(['should_pause_video' => true, 'frame_continue_playing_option' => 'click_outside_frame_element_or_frame_button'], $frame->toArray()['action']);
+    }
+
+    #[Test]
+    public function image_fit_is_sent_as_a_value_the_api_accepts(): void
+    {
+        $this->assertSame('', Arr::get(new ImageInteraction(startTime: 0, endTime: 1, imageUrl: '/a.png', objectFit: ObjectFit::Default)->toArray(), 'style.object_fit'));
+        $this->assertSame('cover', Arr::get(new FrameInteraction(startTime: 0, objectFit: ObjectFit::Cover)->toArray(), 'style.object_fit'));
+        $this->assertSame('cover', Arr::get(new PauseInteraction(startTime: 0, objectFit: ObjectFit::Cover)->toArray(), 'style.object_fit'));
     }
 
     #[Test]

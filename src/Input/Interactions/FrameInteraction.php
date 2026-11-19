@@ -5,6 +5,7 @@ namespace Hihaho\Sdk\Input\Interactions;
 use Hihaho\Sdk\Enums\FrameContinuePlaying;
 use Hihaho\Sdk\Enums\InteractionType;
 use Hihaho\Sdk\Enums\MenuButtonPosition;
+use Hihaho\Sdk\Enums\ObjectFit;
 use Hihaho\Sdk\Input\Fields;
 
 /**
@@ -28,7 +29,7 @@ final readonly class FrameInteraction extends InteractionInput
         public ?MenuButtonPosition $buttonPosition = null,
         public ?bool $resumeVideoWithEvent = null,
         public ?bool $blockPlayback = null,
-        public ?string $objectFit = null,
+        public ?ObjectFit $objectFit = null,
         public ?bool $stayAliveAfterHiding = null,
         ?string $ref = null,
         ?AdaptiveCondition $adaptiveCondition = null,
@@ -53,7 +54,7 @@ final readonly class FrameInteraction extends InteractionInput
             'style.background_color' => $this->backgroundColor,
             'should_fade_in' => $this->fadeIn,
             'should_fade_out' => $this->fadeOut,
-            'style.object_fit' => $this->objectFit,
+            'style.object_fit' => $this->objectFit?->value,
             'attributes.should_stay_alive_after_hiding' => $this->stayAliveAfterHiding,
         ], [
             $this->box?->toArray() ?? [],
