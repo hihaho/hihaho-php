@@ -1,8 +1,7 @@
-# Third-party actions are pinned to a full commit SHA, with the version as a
-# comment so Dependabot can update both. First-party actions keep a tag.
+# The repository requires every action to be pinned to a full commit SHA, with
+# the version as a comment so Dependabot can update both.
 rules:
   unpinned-uses:
     config:
       policies:
-        "actions/*": ref-pin
         "*": hash-pin
