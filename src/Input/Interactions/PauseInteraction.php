@@ -4,6 +4,7 @@ namespace Hihaho\Sdk\Input\Interactions;
 
 use Hihaho\Sdk\Enums\ContinueButtonDisplayMode;
 use Hihaho\Sdk\Enums\InteractionType;
+use Hihaho\Sdk\Enums\ObjectFit;
 use Hihaho\Sdk\Enums\PauseContent;
 use Hihaho\Sdk\Enums\TextStroke;
 use Hihaho\Sdk\Input\Fields;
@@ -31,7 +32,7 @@ final readonly class PauseInteraction extends InteractionInput
         public ?ContinueButtonDisplayMode $continueButton = null,
         public ?string $continueButtonLeft = null,
         public ?string $continueButtonTop = null,
-        public ?string $objectFit = null,
+        public ?ObjectFit $objectFit = null,
         public ?float $opacity = null,
         public ?bool $clickThrough = null,
         public ?bool $blockPlayback = null,
@@ -69,7 +70,7 @@ final readonly class PauseInteraction extends InteractionInput
             'continue_button_display_mode' => $this->continueButton?->value,
             'style.continue_button_left' => $this->continueButtonLeft,
             'style.continue_button_top' => $this->continueButtonTop,
-            'style.object_fit' => $this->objectFit,
+            'style.object_fit' => $this->objectFit?->value,
             'style.opacity' => $this->opacity,
             'attributes.should_click_through' => $this->clickThrough,
             'should_play_gif_on_mouseover' => $this->playGifOnMouseover,

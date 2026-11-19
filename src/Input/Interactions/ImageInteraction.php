@@ -3,6 +3,7 @@
 namespace Hihaho\Sdk\Input\Interactions;
 
 use Hihaho\Sdk\Enums\InteractionType;
+use Hihaho\Sdk\Enums\ObjectFit;
 use Hihaho\Sdk\Input\Fields;
 
 final readonly class ImageInteraction extends InteractionInput
@@ -20,7 +21,7 @@ final readonly class ImageInteraction extends InteractionInput
         public ?Popup $popup = null,
         public ?Tooltip $tooltip = null,
         public ?Action $action = null,
-        public ?string $objectFit = null,
+        public ?ObjectFit $objectFit = null,
         public ?float $opacity = null,
         public ?bool $clickThrough = null,
         public ?bool $playGifOnMouseover = null,
@@ -48,7 +49,7 @@ final readonly class ImageInteraction extends InteractionInput
             'style.background_color' => $this->backgroundColor,
             'should_fade_in' => $this->fadeIn,
             'should_fade_out' => $this->fadeOut,
-            'style.object_fit' => $this->objectFit,
+            'style.object_fit' => $this->objectFit?->value,
             'style.opacity' => $this->opacity,
             'attributes.should_click_through' => $this->clickThrough,
             'should_play_gif_on_mouseover' => $this->playGifOnMouseover,
