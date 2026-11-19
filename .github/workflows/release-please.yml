@@ -24,4 +24,4 @@ jobs:
     steps:
       # Opens or updates the release PR from the Conventional Commits on main, and tags the
       # release when that PR merges. Settings: release-please-config.json.
-      - uses: googleapis/release-please-action@v5
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
