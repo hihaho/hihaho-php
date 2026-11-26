@@ -68,6 +68,16 @@ $token = $hihaho->video(123)->createViewerToken('user-42', lifetimeSeconds: 3600
 echo $token->playerUrl;
 ```
 
+A translated copy is a new video in another locale. The call returns the copy at once; its questions, interactions and subtitles are translated in the background. Without ids, all questions and interactions are copied. With a list of ids, only those are copied:
+
+```php
+use Hihaho\Sdk\Enums\Locale;
+
+$copy = $hihaho->video(123)->createTranslatedCopy(Locale::DeDE);
+
+$copy = $hihaho->video(123)->createTranslatedCopy(Locale::DeDE, questionIds: [5, 6], interactionIds: [4]);
+```
+
 ## Folders
 
 ```php

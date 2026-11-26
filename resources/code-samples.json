@@ -19,6 +19,7 @@
         "api.v2.video.move.batch": "$hihaho->videos()->moveMany([123, 124], folderId: 7);",
         "api.v2.video.swap-uuid": "$swapped = $hihaho->videos()->swap(fromUuid: 'uuid-of-the-old-video', toUuid: 'uuid-of-the-new-video');",
         "api.v2.video.allowed-viewer-token.store": "$token = $hihaho->video(123)->createViewerToken('user-42', lifetimeSeconds: 3600);\n\necho $token->playerUrl;",
+        "api.v2.video.translated-copy.create": "use Hihaho\\Sdk\\Enums\\Locale;\n\n// Questions, interactions and subtitles are translated in the background.\n$copy = $hihaho->video(123)->createTranslatedCopy(Locale::DeDE);\n\n// Or copy only some questions and interactions:\n$copy = $hihaho->video(123)->createTranslatedCopy(Locale::DeDE, questionIds: [5, 6], interactionIds: [4]);\n\necho $copy->id;",
         "api.v2.video.thumbnail.update": "$video = $hihaho->video(123)->thumbnails()->upload('/path/to/poster.jpg');",
         "api.v2.video.thumbnail.index": "foreach ($hihaho->video(123)->thumbnails()->list() as $thumbnail) {\n    echo $thumbnail->deliveryUrl;\n}",
         "api.v2.video.thumbnail.activate": "$hihaho->video(123)->thumbnails()->activate('thumbnail-id');",

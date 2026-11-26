@@ -4,6 +4,7 @@ namespace Hihaho\Sdk\Tests\Unit\Resources;
 
 use Closure;
 use Hihaho\Sdk\Enums\AiTaskType;
+use Hihaho\Sdk\Enums\Locale;
 use Hihaho\Sdk\Enums\VideoPlatform;
 use Hihaho\Sdk\Hihaho;
 use Hihaho\Sdk\Input\Interactions\ZoomInteraction;
@@ -86,6 +87,7 @@ final class RouteCallTest extends ResourceTestCase
             },
             'api.v2.video.swap-uuid' => fn (Hihaho $h): mixed => $h->videos()->swap('from-uuid', 'to-uuid'),
             'api.v2.video.allowed-viewer-token.store' => fn (Hihaho $h): mixed => $h->video(12)->createViewerToken('viewer-1'),
+            'api.v2.video.translated-copy.create' => fn (Hihaho $h): mixed => $h->video(12)->createTranslatedCopy(Locale::DeDE),
             'api.v2.video.thumbnail.update' => self::uploadThumbnail(...),
             'api.v2.video.thumbnail.index' => fn (Hihaho $h): mixed => $h->video(12)->thumbnails()->list()->page(),
             'api.v2.video.thumbnail.activate' => function (Hihaho $h): void {

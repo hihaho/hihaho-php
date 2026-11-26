@@ -5,8 +5,10 @@ namespace Hihaho\Sdk\Resources;
 use Hihaho\Sdk\Data\Video;
 use Hihaho\Sdk\Data\VideoExport;
 use Hihaho\Sdk\Data\ViewerToken;
+use Hihaho\Sdk\Enums\Locale;
 use Hihaho\Sdk\Http\Connector;
 use Hihaho\Sdk\Input\VideoUpdate;
+use InvalidArgumentException;
 
 /**
  * One video and everything that belongs to it. Get it with `$hihaho->video($videoId)`; it sends no
@@ -53,6 +55,24 @@ final readonly class VideoScope extends Resource
         return ViewerToken::fromArray($this->connector->decode($this->connector->post("v2/video/{$this->videoId}/allowed_viewer_token", $body)));
     }
 
+    /**
+     * Copies the video into another locale and returns the copy at once; its questions, interactions
+     * and subtitles are translated in the background. The locale must differ from the video's own.
+     *
+     * @param  list<int>|null  $questionIds  null copies every question; a list copies only those. At most 1000.
+     * @param  list<int>|null  $interactionIds  null copies every interaction; a list copies only those. At most 1000.
+     */
+    public function createTranslatedCopy(Locale $locale, ?array $questionIds = null, ?array $interactionIds = null): Video
+    {
+        $body = array_filter([
+            'locale' => $locale->value,
+            'question_ids' => $this->optionalIds($questionIds),
+            'interaction_ids' => $this->optionalIds($interactionIds),
+        ], fn (mixed $value): bool => $value !== null);
+
+        return Video::fromArray($this->data($this->connector->post("v2/video/{$this->videoId}/translated-copy", $body)));
+    }
+
     public function interactions(): Interactions
     {
         return new Interactions($this->connector, $this->videoId);
@@ -86,5 +106,18 @@ final readonly class VideoScope extends Resource
     public function statistics(): Statistics
     {
         return new Statistics($this->connector, $this->videoId);
+    }
+
+    /**
+     * @param  list<int>|null  $ids
+     * @return list<int>|null
+     */
+    private function optionalIds(?array $ids): ?array
+    {
+        if ($ids !== null && count($ids) > 1000) {
+            throw new InvalidArgumentException('Pass at most 1000 question or interaction ids.');
+        }
+
+        return $ids === null ? null : array_values($ids);
     }
 }

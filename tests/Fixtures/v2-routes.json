@@ -215,6 +215,11 @@
         "uri": "v2/video/{video_id}/thumbnail"
     },
     {
+        "name": "api.v2.video.translated-copy.create",
+        "method": "POST",
+        "uri": "v2/video/{video_id}/translated-copy"
+    },
+    {
         "name": "api.v2.video.update",
         "method": "PUT",
         "uri": "v2/video/{video_id}"
