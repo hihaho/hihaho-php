@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/hihaho/hihaho-php/compare/v0.2.0...v0.2.1) (2026-11-26)
+
+
+### Features
+
+* **videos:** create a translated copy of a video ([#8](https://github.com/hihaho/hihaho-php/issues/8)) ([c176815](https://github.com/hihaho/hihaho-php/commit/c1768157eceae8cc27c4a2a79ea4a34a715ae2db))
+
 ## [0.2.0](https://github.com/hihaho/hihaho-php/compare/v0.1.0...v0.2.0) (2026-11-19)
 
 
