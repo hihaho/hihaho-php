@@ -32,6 +32,7 @@ final class RouteMap
         'api.v2.video.move.batch' => ['PUT', 'v2/video/batch/move/{container}', ['videos', 'moveMany']],
         'api.v2.video.swap-uuid' => ['POST', 'v2/video/swap/from/{videoFrom}/to/{videoTo}', ['videos', 'swap']],
         'api.v2.video.allowed-viewer-token.store' => ['POST', 'v2/video/{video_id}/allowed_viewer_token', ['video', 'createViewerToken']],
+        'api.v2.video.translated-copy.create' => ['POST', 'v2/video/{video_id}/translated-copy', ['video', 'createTranslatedCopy']],
         'api.v2.video.thumbnail.update' => ['POST', 'v2/video/{video_id}/thumbnail', ['video', 'thumbnails', 'upload']],
         'api.v2.video.thumbnail.index' => ['GET', 'v2/video/{video_id}/thumbnail', ['video', 'thumbnails', 'list']],
         'api.v2.video.thumbnail.activate' => ['PUT', 'v2/video/{video_id}/thumbnail/{thumbnail_id}/activate', ['video', 'thumbnails', 'activate']],

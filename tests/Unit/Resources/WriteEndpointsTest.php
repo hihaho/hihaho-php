@@ -195,6 +195,12 @@ final class WriteEndpointsTest extends ResourceTestCase
         yield 'no ids' => [function (Hihaho $hihaho): void {
             $hihaho->videos()->deleteMany([]);
         }];
+        yield '1001 questions to translate' => [function (Hihaho $hihaho): void {
+            $hihaho->video(12)->createTranslatedCopy(Locale::DeDE, questionIds: range(1, 1001));
+        }];
+        yield '1001 interactions to translate' => [function (Hihaho $hihaho): void {
+            $hihaho->video(12)->createTranslatedCopy(Locale::DeDE, interactionIds: range(1, 1001));
+        }];
     }
 
     #[Test]
@@ -252,6 +258,37 @@ final class WriteEndpointsTest extends ResourceTestCase
         $this->hihaho->video(12)->createViewerToken('viewer-1');
 
         $this->assertSentJson('POST', 'v2/video/12/allowed_viewer_token', ['viewer_uid' => 'viewer-1']);
+    }
+
+    #[Test]
+    public function a_translated_copy_without_ids_sends_only_the_locale(): void
+    {
+        $this->respond(['data' => [
+            'author_notes' => null, 'created_at' => '2026-10-15 14:09:51', 'description' => null, 'display_name' => 'Safety (de_DE)',
+            'embed_url' => 'https://e', 'id' => 13, 'iframe_element' => '<iframe>', 'player_url' => 'https://p', 'status' => 0,
+            'thumbnails' => ['big' => 'b.jpg', 'small' => 's.jpg'], 'uuid' => 'def', 'video_container_id' => 7,
+            'video_container' => self::folderRow(), 'start_time' => 0, 'locale' => 'de_DE', 'end_time' => 60000,
+            'duration' => 60000, 'tags' => [], 'updated_at' => '2026-10-15 14:09:51', 'should_allow_seeking' => null,
+            'effective_should_allow_seeking' => true, 'enable_embedding' => 'all_websites', 'allowed_domains' => null,
+            'container_allowed_domains' => null, 'effective_allowed_domains' => null,
+        ]], 201);
+
+        $copy = $this->hihaho->video(12)->createTranslatedCopy(Locale::DeDE);
+
+        $this->assertSentJson('POST', 'v2/video/12/translated-copy', ['locale' => 'de_DE']);
+        $this->assertSame(13, $copy->id);
+        $this->assertSame(Locale::DeDE, $copy->locale);
+        $this->assertSame(7, $copy->videoContainer->id);
+    }
+
+    #[Test]
+    public function a_translated_copy_sends_the_given_ids(): void
+    {
+        $this->respond(['data' => ['id' => 13]]);
+
+        $this->hihaho->video(12)->createTranslatedCopy(Locale::DeDE, questionIds: [5, 6], interactionIds: []);
+
+        $this->assertSentJson('POST', 'v2/video/12/translated-copy', ['locale' => 'de_DE', 'question_ids' => [5, 6], 'interaction_ids' => []]);
     }
 
     #[Test]
